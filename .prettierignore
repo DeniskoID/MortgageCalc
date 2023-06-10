@@ -1,0 +1,11 @@
+dist/
+tsconfig.json
+.prettierrc
+.babelrc
+.eslintrc
+.stylelintrc.json
+gulpfile.js
+package-lock.json
+package.json
+README.md
+src\.eslintrc
