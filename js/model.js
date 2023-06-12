@@ -1,5 +1,8 @@
 let data = {
   selectedProgram: 0.1,
+  cost: 12000000,
+  minPrice: 375000,
+  maxPrice: 100000000,
   programs: {
     base: 0.1,
     it: 0.047,
@@ -21,6 +24,17 @@ function getResults() {
 }
 
 function setData(newData) {
+  if (newData.onUpdate === 'inputCost') {
+    // Обновление цены
+    // Если стоимость меньше мин цены
+    if (newData.cost < data.minPrice) {
+      newData.cost = data.minPrice;
+    }
+    // Если стоимость больше макс цены
+    if (newData.cost > data.maxPrice) {
+      newData.cost = data.maxPrice;
+    }
+  }
   data = {
     ...data,
     ...newData,
