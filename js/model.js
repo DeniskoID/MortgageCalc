@@ -5,6 +5,14 @@ let data = {
   maxPrice: 100000000,
   minPaymentPercents: 0.15,
   maxPaymentPercents: 0.9,
+  paymentPercents: 0.5,
+  payment: 6000000,
+  getMinPayment: function () {
+    return this.cost * this.minPaymentPercents;
+  },
+  getMaxPayment: function () {
+    return this.cost * this.maxPaymentPercents;
+  },
   programs: {
     base: 0.1,
     it: 0.047,
@@ -26,6 +34,8 @@ function getResults() {
 }
 
 function setData(newData) {
+  console.log('New data', newData);
+
   if (newData.onUpdate === 'radioProgram') {
     if (newData.id === 'zero-value') {
       data.minPaymentPercents = 0;
@@ -34,17 +44,28 @@ function setData(newData) {
     }
   }
 
-  if (newData.onUpdate === 'inputCost') {
+  if (newData.onUpdate === 'inputCost' || newData.onUpdate === 'costSlider') {
     // Обновление цены
     // Если стоимость меньше мин цены
-    if (newData.cost < data.minPrice) {
-      newData.cost = data.minPrice;
-    }
+    if (newData.cost < data.minPrice) newData.cost = data.minPrice;
+
     // Если стоимость больше макс цены
-    if (newData.cost > data.maxPrice) {
-      newData.cost = data.maxPrice;
+    if (newData.cost > data.maxPrice) newData.cost = data.maxPrice;
+
+    // Если новая стоимость меньше первоначалки
+    console.log(data.payment);
+    console.log(data.getMaxPayment());
+    if (data.payment > data.getMaxPayment()) {
+      console.log('here');
+      data.payment = data.getMaxPayment();
+    }
+
+    // Если сумма первоначалки меньше чем допустимый мин платеж
+    if (data.payment < data.getMinPayment()) {
+      data.payment = data.getMinPayment();
     }
   }
+
   data = {
     ...data,
     ...newData,
@@ -55,7 +76,7 @@ function setData(newData) {
   };
 
   console.log('Updated data', data);
-  console.log('New results', results);
+  console.log('New resulst', results);
 }
 
 export { getData, setData, getResults };
