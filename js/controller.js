@@ -9,6 +9,8 @@ import costRange from './view/costRange.js';
 import paymentInput from './view/paymentInput.js';
 import paymentRange from './view/paymentRange.js';
 
+import timeInput from './view/timeInput.js';
+
 window.onload = function () {
   const getData = Model.getData;
 
@@ -22,6 +24,9 @@ window.onload = function () {
   // Init Payment input
   const cleavePayment = paymentInput(getData);
   const sliderPayment = paymentRange(getData);
+
+  // Time
+  const cleaveTime = timeInput(getData);
 
   document.addEventListener('updateForm', (e) => {
     Model.setData(e.detail);
