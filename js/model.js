@@ -37,8 +37,6 @@ function getResults() {
 }
 
 function setData(newData) {
-  console.log('New data', newData);
-
   if (newData.onUpdate === 'radioProgram') {
     if (newData.id === 'zero-value') {
       data.minPaymentPercents = 0;
@@ -56,10 +54,7 @@ function setData(newData) {
     if (newData.cost > data.maxPrice) newData.cost = data.maxPrice;
 
     // Если новая стоимость меньше первоначалки
-    console.log(data.payment);
-    console.log(data.getMaxPayment());
     if (data.payment > data.getMaxPayment()) {
-      console.log('here');
       data.payment = data.getMaxPayment();
     }
 
@@ -67,6 +62,8 @@ function setData(newData) {
     if (data.payment < data.getMinPayment()) {
       data.payment = data.getMinPayment();
     }
+
+    data.paymentPercents = (data.payment * 100) / newData.cost / 100;
   }
 
   if (newData.onUpdate === 'paymentSlider') {
@@ -89,12 +86,20 @@ function setData(newData) {
     ...newData,
   };
 
+  // Расчёт ипотеки
+  const months = data.time * 12;
+  const totalAmount = data.cost - data.payment;
+  const monthRate = data.selectedProgram / 12;
+  const generalRate = (1 + monthRate) ** months;
+  const monthPayment = (totalAmount * monthRate * generalRate) / (generalRate - 1);
+  const overPayment = monthPayment * months - totalAmount;
+
   results = {
     rate: data.selectedProgram,
+    totalAmount,
+    monthPayment,
+    overPayment,
   };
-
-  console.log('Updated data', data);
-  console.log('New resulst', results);
 }
 
 export { getData, setData, getResults };
