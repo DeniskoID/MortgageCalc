@@ -66,6 +66,23 @@ function setData(newData) {
     data.paymentPercents = (data.payment * 100) / newData.cost / 100;
   }
 
+  if (newData.onUpdate === 'inputPayment') {
+    // Пересчитываем %
+    newData.paymentPercents = (newData.payment * 100) / data.cost / 100;
+
+    // Если проценты больше 90%
+    if (newData.paymentPercents > data.maxPaymentPercents) {
+      newData.paymentPercents = data.maxPaymentPercents;
+      newData.payment = data.cost * data.maxPaymentPercents;
+    }
+
+    // Если проценты меньше 90%
+    if (newData.paymentPercents < data.minPaymentPercents) {
+      newData.paymentPercents = data.minPaymentPercents;
+      newData.payment = data.cost * data.minPaymentPercents;
+    }
+  }
+
   if (newData.onUpdate === 'paymentSlider') {
     newData.paymentPercents = newData.paymentPercents / 100;
     data.payment = data.cost * newData.paymentPercents;
@@ -86,7 +103,7 @@ function setData(newData) {
     ...newData,
   };
 
-  // Расчёт ипотеки
+  // Рассчет ипотеки
   const months = data.time * 12;
   const totalAmount = data.cost - data.payment;
   const monthRate = data.selectedProgram / 12;

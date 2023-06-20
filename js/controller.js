@@ -63,7 +63,6 @@ window.onload = function () {
 
     // costInput
     if (data.onUpdate !== 'inputCost') {
-      console.log('UPDATE INPUT COST');
       cleaveCost.setRawValue(data.cost);
     }
 
@@ -77,6 +76,11 @@ window.onload = function () {
       cleavePayment.setRawValue(data.payment);
     }
 
+    // paymentSlider
+    if (data.onUpdate !== 'paymentSlider') {
+      sliderPayment.noUiSlider.set(data.paymentPercents * 100);
+    }
+
     // timeInput
     if (data.onUpdate !== 'inputTime') {
       cleaveTime.setRawValue(data.time);
@@ -87,4 +91,93 @@ window.onload = function () {
       sliderTime.noUiSlider.set(data.time);
     }
   }
+
+  //Order Form
+  const openFormBtn = document.querySelector('#openFormBtn');
+  const orderForm = document.querySelector('#orderForm');
+  const submitFormBtn = document.querySelector('#submitFormBtn');
+
+  openFormBtn.addEventListener('click', function () {
+    orderForm.classList.remove('none');
+    openFormBtn.classList.add('none');
+  });
+
+  orderForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    // Сщбираем данные с формы перед disabled
+    const formData = new FormData(orderForm);
+
+    // Disable для кнопки и инпутов
+    submitFormBtn.disabled = true;
+    submitFormBtn.innerText = 'Заявка отправлена';
+
+    orderForm.querySelectorAll('input').forEach((input) => {
+      input.disabled = true;
+    });
+
+    fetchData();
+
+    async function fetchData() {
+      const data = Model.getData();
+      const results = Model.getResults();
+
+      let url = checkOnUrl(document.location.href);
+
+      function checkOnUrl(url) {
+        let urlArrayDot = url.split('.');
+
+        if (urlArrayDot[urlArrayDot.length - 1] === 'html') {
+          urlArrayDot.pop();
+
+          let newUrl = urlArrayDot.join('.');
+
+          let urlArraySlash = newUrl.split('/');
+          urlArraySlash.pop();
+
+          newUrl = urlArraySlash.join('/');
+
+          return newUrl;
+        }
+
+        return url;
+      }
+
+      const response = await fetch(url + 'mail.php', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json;charset=utf-8',
+        },
+        body: JSON.stringify({
+          form: {
+            name: formData.get('name'),
+            email: formData.get('email'),
+            phone: formData.get('phone'),
+          },
+          data,
+          results,
+        }),
+      });
+
+      const result = await response.text();
+
+      submitFormBtn.disabled = false;
+      submitFormBtn.innerText = 'Оформить заявку';
+
+      orderForm.querySelectorAll('input').forEach((input) => {
+        input.disabled = false;
+      });
+
+      // Очищаем поля формы
+      orderForm.reset();
+      orderForm.classList.add('none');
+
+      // На основе ответа от сервера показываем сообщение об успехе или ошибке
+      if (result === 'SUCCESS') {
+        document.getElementById('success').classList.remove('none');
+      } else {
+        document.getElementById('error').classList.remove('none');
+      }
+    }
+  });
 };
