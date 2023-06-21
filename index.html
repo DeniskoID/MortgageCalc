@@ -11,12 +11,10 @@
 </head>
 
 <body>
-
     <div class="container">
         <div class="title">Онлайн калькулятор</div>
         <div class="row">
             <form id="form" class="col-left">
-
                 <!-- programms-wraper -->
                 <div class="programms-wraper">
                     <input type="radio" name="program" value="base" id="base-value" class="radio-hidden" checked>
@@ -33,7 +31,6 @@
                             id="zero-text">XX</span></label>
                 </div>
                 <!-- // programms-wraper -->
-
                 <!-- params-wrapper -->
                 <div class="params-wrapper">
 
@@ -79,43 +76,34 @@
 
                 </div>
                 <!-- // params-wrapper -->
-
             </form>
             <!-- Col Right -->
             <div class="col-right">
-
                 <!-- Summary -->
                 <div class="summary">
-
                     <div class="summary__item summary-item">
                         <div class="summary-item__title">Ежемесячный платеж</div>
                         <div class="summary-item__value summary-item__value--bigger" id="total-month-payment">XXXX</div>
                     </div>
-
                     <div class="summary__item summary-item">
                         <div class="summary-item__title">Процентная ставка</div>
                         <div class="summary-item__value summary-item__value--bigger summary-item__value--percents"
                             id="total-percent">XX</div>
                     </div>
-
                     <div class="summary__item summary-item">
                         <div class="summary-item__title">Сумма кредита</div>
                         <div class="summary-item__value" id="total-cost">XXXX</div>
                     </div>
-
                     <div class="summary__item summary-item">
                         <div class="summary-item__title">Переплата</div>
                         <div class="summary-item__value" id="total-overpayment">XXXX</div>
                     </div>
-
                 </div>
                 <!-- // Summary -->
 
                 <!-- Make order -->
                 <div class="order-form-wrapper">
-
                     <button class="order-btn" id="openFormBtn" type="button">Оставить заявку</button>
-
                     <form class="order-form none" id="orderForm">
                         <input name="name" value="" type="text" class="order-input" placeholder="Имя, Фамилия" required>
                         <input name="email" type="email" class="order-input" placeholder="Email" required>
@@ -124,21 +112,15 @@
                         <button type="submit" class="order-btn order-btn--black" id="submitFormBtn">Оформить
                             заявку</button>
                     </form>
-
                     <div id="success" class="alert alert--success none" role="alert">
                         <span class="alert__icon">😀👍</span>
                         <span class="alert__text">Заявка отправлена успешно!</span>
                     </div>
-
                     <div id="error" class="alert alert--danger none" role="alert">
                         <span class="alert__icon">😟</span>
                         <span class="alert__text">Что-то пошло не так. <br>Попробуйте еще раз</span>
                     </div>
-
                 </div>
-
-
-
             </div>
             <!-- // Col Right -->
         </div>
